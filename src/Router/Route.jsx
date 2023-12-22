@@ -6,6 +6,9 @@ import Login from "../Pages/Login";
 import Register from "../Pages/Register";
 import ErrorPage from "../Pages/ErrorPage";
 import Dashboard from "../Dashboard/Dashboard";
+import PrivateRout from "./PrivateRout";
+import DashboardHome from "../Dashboard/DashboardHome";
+import AddTask from "../Pages/AddTask";
 
 const Route = createBrowserRouter([
   {
@@ -27,10 +30,26 @@ const Route = createBrowserRouter([
     path: "/register",
     element: <Register />,
   },
+  {
+    path: "dashboardHome",
+    element: <DashboardHome />,
+    loader: ({ params }) => fetch(`https://task-managment-server-sigma.vercel.app/tasks/${params.id}`),
+  },
 
   {
     path: "/dashboard",
-    element: <Dashboard />,
+    element: (
+      <PrivateRout>
+        <Dashboard />
+      </PrivateRout>
+    ),
+    // children: [
+    //   {
+    //     path: "dashboardHome",
+    //     element: <DashboardHome />,
+    //   },
+
+    // ],
   },
 ]);
 

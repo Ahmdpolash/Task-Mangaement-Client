@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import logo from "../../public/logo.png";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { authContext } from "../Provider/AuthProvider";
 import { toast } from "react-hot-toast";
 import useAxiosPublic from "../Hooks/useAxiosPublic";
@@ -9,6 +9,7 @@ const Login = () => {
   const { loginUser, googleLogin } = useContext(authContext);
   const navigate = useNavigate();
   const axiosPublic = useAxiosPublic();
+  const location = useLocation()
 
   const handleLogin = (e) => {
     e.preventDefault();
@@ -20,7 +21,7 @@ const Login = () => {
 
     loginUser(email, password).then((res) => {
       toast.success("Login successful");
-      navigate("/dashboard");
+      navigate(location.state? location.state : '/');
     });
   };
 
@@ -31,7 +32,8 @@ const Login = () => {
         image: res.user.photoURL,
         email: res.user.email,
       };
-      navigate("/dashboard");
+      navigate(location.state? location.state : '/');
+
       toast.success("Login successful");
       axiosPublic.post("/users", userInfo);
       if (res.data.insertedId) {
